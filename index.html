@@ -7,14 +7,16 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>冬季外套選衣單</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Serif+TC:wght@900&display=swap">
 <style>
 /* 版面概念：手機 App。上方標題列、下方可左右滑的款式分頁、中間一欄卡片。照片是有頁碼、圓點、箭頭的輪播；穿搭參考是帶邊緣漸層與滑動提示的橫向列。建議與尺寸收在彈出面板。 */
 :root{
   --bg:#ECEDEF; --surface:#F9F9FA; --ink:#1E2126; --muted:#5A616B; --line:#D2D5DA;
   --accent:#2D4B73; --accent-soft:#DCE4EF; --on-accent:#FFFFFF; --scrim:rgba(20,22,26,.5); --shadow:0 2px 10px rgba(20,24,32,.10);
   --display:"Noto Serif TC","Songti TC","PMingLiU",serif;
-  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --body:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
   --mono:"DM Mono",ui-monospace,Consolas,monospace;
   --top-h:56px; --tab-h:74px; --col:540px;
 }
@@ -106,6 +108,7 @@ button:focus-visible,a:focus-visible,.shots:focus-visible{outline:2px solid var(
 .kv dt{font-size:12px;font-weight:700;color:var(--accent);white-space:nowrap;padding-top:2px}
 .kv dd{margin:0}
 .note{font-size:13px;color:var(--muted)}
+.card h3,.panel h3{font-family:var(--body);font-weight:700}
 
 /* 穿搭參考 */
 .refs{display:flex;flex-direction:column;gap:18px;padding-top:6px}
@@ -351,28 +354,31 @@ const GROUPS = [
 ];
 
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const webp = f => f.replace("clean/", "c_").replace(".jpg", ".webp");
+const M = f => "m/" + webp(f);   // 壓縮後的大圖
+const T = f => "t/" + webp(f);   // 小縮圖（款式列、排行榜、建議清單）
 const likes = n => n >= 10000 ? (n / 10000).toFixed(1) + " 萬" : n.toLocaleString();
 const KEYS = GROUPS.map(g => g.k).concat("R");
 const N = GROUPS.length;
 
 document.getElementById("tabs").innerHTML = GROUPS.map(g =>
-  `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${g.items[0].imgs[0][0]}" alt=""><span>${g.short}</span></button>`).join("") +
+  `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${T(g.items[0].imgs[0][0])}" alt=""><span>${g.short}</span></button>`).join("") +
   `<button type="button" class="tab press" role="tab" data-go="R" id="tab-R"><i class="gicon">1·2·3</i><span>外套排行榜</span></button>`;
 
 const GAME = `
   <section class="view" id="view-R" hidden>
-    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>從最喜歡的開始，一個一個點，點到的會標上名次。點錯了再點一次就取消。排完可以把排行榜存成圖片傳給我。</p></div>
+    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>從最喜歡的開始，一個一個點，點到的會標上名次。點錯了再點一次就取消。排完可以直接把排行榜圖片分享到 LINE 給我。</p></div>
     <div class="rank-status" id="rank-status" aria-live="polite">已排 0 / ${N}</div>
     <div class="rank-grid">${GROUPS.map(g => `
-      <button type="button" class="rk press" data-rk="${g.k}" id="rk-${g.k}" aria-pressed="false"><img src="${g.items[0].imgs[0][0]}" alt=""><em>點我</em><span><small>款式 ${g.k}</small>${g.short}</span></button>`).join("")}</div>
+      <button type="button" class="rk press" data-rk="${g.k}" id="rk-${g.k}" aria-pressed="false"><img src="${T(g.items[0].imgs[0][0])}" alt=""><em>點我</em><span><small>款式 ${g.k}</small>${g.short}</span></button>`).join("")}</div>
     <div class="rank-actions">
       <button type="button" class="btn press" id="rank-reset">重來</button>
       <button type="button" class="btn primary press" id="rank-make" disabled>排完後產生圖片</button>
     </div>
     <div class="rank-out" id="rank-out" hidden>
       <img id="rank-img" alt="我的外套排行榜圖片">
-      <a class="btn primary press" id="rank-dl" download="我的外套排行榜.png">下載排行榜圖片</a>
-      <p class="note">如果按下載沒有反應，長按上面的圖片選「儲存圖片」也可以。</p>
+      <button type="button" class="btn primary press" id="rank-share">分享到 LINE</button>
+      <p class="note" id="rank-msg">按下去會跳出分享選單，選 LINE 再選朋友就能傳出。</p>
     </div>
   </section>`;
 
@@ -382,7 +388,7 @@ document.getElementById("views").innerHTML = GAME + GROUPS.map((g, gi) => { cons
     ${g.items.map(it => { const n = it.imgs.length; return `
     <article class="card" id="${it.id}">
       <div class="gallery">
-        <div class="shots" tabindex="0" aria-label="${it.id} 照片">${it.imgs.map(([f,c,a]) => `<img class="${c}" src="${f}" alt="${esc(a)}">`).join("")}</div>
+        <div class="shots" tabindex="0" aria-label="${it.id} 照片">${it.imgs.map(([f,c,a]) => `<img class="${c}" src="${M(f)}" alt="${esc(a)}" loading="lazy" decoding="async">`).join("")}</div>
         ${n > 1 ? `<span class="count">1 / ${n}</span>
         <button type="button" class="arrow prev press" id="prev-${it.id}" aria-label="上一張" disabled>‹</button>
         <button type="button" class="arrow next press" id="next-${it.id}" aria-label="下一張">›</button>
@@ -417,7 +423,7 @@ document.getElementById("views").innerHTML = GAME + GROUPS.map((g, gi) => { cons
   </section>`; }).join("");
 
 document.getElementById("rec").innerHTML = GROUPS.map(g => { const it = g.items.find(x => x.rec); return `
-  <button type="button" class="press" data-go="${it.id}" id="rec-${it.id}"><img src="${it.imgs[0][0]}" alt=""><div><small>款式 ${g.k}・${g.short}</small><b>${it.id}　${it.name}</b><span>${it.rec}</span></div></button>`; }).join("");
+  <button type="button" class="press" data-go="${it.id}" id="rec-${it.id}"><img src="${T(it.imgs[0][0])}" alt="" loading="lazy"><div><small>款式 ${g.k}・${g.short}</small><b>${it.id}　${it.name}</b><span>${it.rec}</span></div></button>`; }).join("");
 
 /* 照片輪播：頁碼、圓點、箭頭 */
 document.querySelectorAll(".gallery").forEach(gal => {
@@ -483,7 +489,21 @@ document.addEventListener("click", e => {
 window.addEventListener("hashchange", route);
 
 /* 排名小遊戲：依序點選，排完產生圖片 */
-let order = [];
+let order = [], lastBlob = null;
+document.getElementById("rank-share").addEventListener("click", async () => {
+  const msg = document.getElementById("rank-msg");
+  if (!lastBlob) return;
+  const file = new File([lastBlob], "我的外套排行榜.png", {type: "image/png"});
+  try {
+    if (navigator.canShare && navigator.canShare({files: [file]})) {
+      await navigator.share({files: [file], title: "我的外套排行榜"});
+      return;
+    }
+  } catch (err) {
+    if (err && err.name === "AbortError") return;
+  }
+  msg.textContent = "這個瀏覽器不能直接分享圖片。請長按上面的圖片，選「儲存圖片」，再到 LINE 傳給我。";
+});
 const rkStatus = document.getElementById("rank-status"), rkMake = document.getElementById("rank-make"), rkOut = document.getElementById("rank-out");
 function rankRender(){
   document.querySelectorAll(".rk").forEach(b => {
@@ -518,18 +538,19 @@ rkMake.addEventListener("click", async () => {
       const g = GROUPS.find(x => x.k === order[i]), y = top + i * rowH;
       c.fillStyle = "#F9F9FA"; c.beginPath(); c.roundRect(60, y, W - 120, rowH - 18, 22); c.fill();
       c.fillStyle = i < 3 ? "#2D4B73" : "#5A616B"; c.font = '500 72px "DM Mono", monospace'; c.textAlign = "center"; c.fillText(String(i + 1), 135, y + 102); c.textAlign = "left";
-      const im = await loadImg(g.items[0].imgs[0][0]);
+      const im = await loadImg(T(g.items[0].imgs[0][0]));
       const tw = 116, th = 136, s = Math.max(tw / im.naturalWidth, th / im.naturalHeight), sw = tw / s, sh = th / s;
       c.save(); c.beginPath(); c.roundRect(210, y + 8, tw, th, 14); c.clip();
       c.drawImage(im, (im.naturalWidth - sw) / 2, 0, sw, sh, 210, y + 8, tw, th); c.restore();
       c.fillStyle = "#2D4B73"; c.font = '500 24px "DM Mono", monospace'; c.fillText("款式 " + g.k, 356, y + 58);
-      c.fillStyle = "#1E2126"; c.font = '700 40px "Noto Sans TC", sans-serif'; c.fillText(g.name, 356, y + 112);
+      c.fillStyle = "#1E2126"; c.font = '700 40px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText(g.name, 356, y + 112);
     }
-    c.fillStyle = "#5A616B"; c.font = '400 24px "Noto Sans TC", sans-serif'; c.fillText("冬季外套選衣單", 70, H - 34);
+    c.fillStyle = "#5A616B"; c.font = '400 24px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText("冬季外套選衣單", 70, H - 34);
     const blob = await new Promise(r => cv.toBlob(r, "image/png"));
     const url = URL.createObjectURL(blob);
     document.getElementById("rank-img").src = url;
-    document.getElementById("rank-dl").href = url;
+    lastBlob = blob;
+    document.getElementById("rank-msg").textContent = "按下去會跳出分享選單，選 LINE 再選朋友就能傳出。";
     rkOut.hidden = false;
     rkOut.scrollIntoView({behavior: "smooth", block: "start"});
   } catch (err) {
