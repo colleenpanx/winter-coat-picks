@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>冬季外套選衣單</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
+<style>
+/* 版面概念：手機 App。上方標題列、下方五個款式分頁、中間是一欄卡片（外套照片可左右滑、底下接穿搭參考）。建議與尺寸收在彈出面板。 */
+:root{
+  --bg:#ECEDEF; --surface:#F9F9FA; --ink:#1E2126; --muted:#5A616B; --line:#D2D5DA;
+  --accent:#2D4B73; --accent-soft:#DCE4EF; --on-accent:#FFFFFF; --scrim:rgba(20,22,26,.5);
+  --display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --mono:"DM Mono",ui-monospace,Consolas,monospace;
+  --top-h:56px; --tab-h:68px; --col:540px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#121417; --surface:#1D2025; --ink:#E9EBEE; --muted:#9CA3AE; --line:#343840;
+  --accent:#93B4E0; --accent-soft:#243145; --on-accent:#10151D; --scrim:rgba(0,0,0,.6); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#121417; --surface:#1D2025; --ink:#E9EBEE; --muted:#9CA3AE; --line:#343840;
+  --accent:#93B4E0; --accent-soft:#243145; --on-accent:#10151D; --scrim:rgba(0,0,0,.6); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(var(--top-h) + 16px) calc(var(--tab-h) + 28px)}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.3;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.col{max-width:var(--col);margin:0 auto}
+
+/* 上方標題列 */
+.appbar{position:fixed;top:0;left:0;right:0;z-index:6;background:var(--surface);border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top,0px)}
+.appbar-in{height:var(--top-h);display:flex;align-items:center;gap:12px;max-width:calc(var(--col) + 32px);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.appbar h1{font-size:18px;font-weight:900;letter-spacing:.02em}
+.appbar .spec{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.3}
+.appbar .ttl{flex:1;min-width:0}
+.pill{cursor:pointer;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:500;white-space:nowrap}
+
+/* 下方款式分頁 */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar-in{height:var(--tab-h);display:grid;grid-template-columns:repeat(5,1fr);max-width:calc(var(--col) + 32px);margin:0 auto;
+  padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+.tab{cursor:pointer;background:transparent;border:0;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;color:var(--muted)}
+.tab img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center 25%;outline:2px solid transparent;outline-offset:2px;opacity:.75}
+.tab span{font-size:10.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"] img{outline-color:var(--accent);opacity:1}
+.tab[aria-selected="true"] span{font-weight:700}
+
+/* 款式頁 */
+.view{display:flex;flex-direction:column;gap:20px}
+.g-head{display:flex;flex-direction:column;gap:4px;padding-top:4px}
+.g-head .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--accent)}
+.g-head h2{font-size:26px;font-weight:900}
+.g-head p{color:var(--muted);font-size:14px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:calc(var(--top-h) + 14px)}
+.shots{display:flex;gap:3px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--line)}
+.shots::-webkit-scrollbar{display:none}
+.shots img{flex:none;height:clamp(340px,112vw,470px);width:auto;max-width:100%;object-fit:cover;object-position:center top;scroll-snap-align:start;display:block}
+.shots img.tall{aspect-ratio:9/16}
+.shots img.std{aspect-ratio:3/4}
+.shots img.wide{aspect-ratio:4/3;height:auto;width:100%}
+.shots img:only-child{width:100%;height:auto;max-height:560px}
+.card-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px}
+.card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.code{font-family:var(--mono);font-weight:500;font-size:13px;background:var(--ink);color:var(--bg);padding:1px 8px;border-radius:4px}
+.card h3{font-size:19px;font-weight:600;flex:1;min-width:0}
+.badge{font-size:11px;font-weight:700;background:var(--accent);color:var(--on-accent);padding:2px 8px;border-radius:999px;letter-spacing:.06em}
+.badge.warn{background:transparent;color:var(--muted);border:1px dashed var(--muted)}
+.more{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.sw{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.sw i{width:14px;height:14px;border-radius:50%;border:1px solid var(--line);display:inline-block}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;margin:0}
+.kv dt{font-size:12px;font-weight:700;color:var(--accent);white-space:nowrap;padding-top:2px}
+.kv dd{margin:0}
+.note{font-size:13px;color:var(--muted)}
+
+/* 穿搭參考 */
+.refs{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.refs > h3{font-size:20px;font-weight:900}
+.rail-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.rail-head b{font-size:15px}
+.rail-head span{font-size:12px;color:var(--muted)}
+.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
+  margin-inline:-16px;padding-inline:16px;scroll-padding-inline:16px}
+.rail::-webkit-scrollbar{display:none}
+.ref{flex:none;width:min(40vw,168px);scroll-snap-align:start;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px;min-width:0}
+.cover{position:relative;border-radius:10px;overflow:hidden;background:var(--line)}
+.ref.ig .cover{aspect-ratio:7/10}
+.ref.xhs .cover{aspect-ratio:3/4}
+.cover img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.cover .play{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:rgba(0,0,0,.5)}
+.cover .play::after{content:"";position:absolute;left:16px;top:12px;border-left:12px solid #fff;border-block:8px solid transparent}
+.cover .meta{position:absolute;left:0;right:0;bottom:0;padding:18px 8px 6px;display:flex;justify-content:space-between;gap:6px;
+  font-size:11px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+.ref strong{font-size:13px;font-weight:500;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* 彈出面板 */
+.scrim{position:fixed;inset:0;z-index:8;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}
+.panel{background:var(--surface);width:100%;max-width:calc(var(--col) + 32px);max-height:86%;overflow-y:auto;border-radius:18px 18px 0 0;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;flex-direction:column;gap:18px}
+.panel-top{position:sticky;top:-8px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;z-index:1}
+.panel-top h2{font-size:20px;font-weight:900}
+.close{cursor:pointer;background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px}
+.panel h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.rec{display:flex;flex-direction:column}
+.rec button{cursor:pointer;background:transparent;border:0;border-top:1px solid var(--line);padding:10px 0;display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;text-align:left}
+.rec img{width:52px;height:66px;object-fit:cover;object-position:center top;border-radius:6px}
+.rec b{display:block;font-size:14px}
+.rec small{display:block;font-size:11px;font-family:var(--mono);color:var(--accent);letter-spacing:.06em}
+.rec span{display:block;font-size:13px;color:var(--muted);line-height:1.5}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;margin:0}
+.facts dt{font-family:var(--mono);font-size:13px;color:var(--accent);white-space:nowrap;padding-top:1px}
+.facts dd{margin:0;font-size:14px}
+.facts dd b{display:block}
+@media (prefers-reduced-motion:no-preference){ .panel{animation:up .22s ease-out} @keyframes up{from{transform:translateY(24px);opacity:.6}} }
+</style>
+</head>
+<body>
+<header class="appbar"><div class="appbar-in">
+  <div class="ttl"><h1>冬季外套選衣單</h1><div class="spec">170–175 cm ・ 65–70 kg</div></div>
+  <button type="button" class="pill" id="open-sheet">建議與尺寸</button>
+</div></header>
+
+<main class="col" id="views"></main>
+
+<nav class="tabbar" aria-label="外套款式"><div class="tabbar-in" id="tabs" role="tablist"></div></nav>
+
+<div class="scrim" id="sheet" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="panel-top"><h2 id="sheet-title">建議與尺寸</h2><button type="button" class="close" id="close-sheet">關閉</button></div>
+    <section>
+      <h3>每種款式建議的那一件</h3>
+      <p class="note" style="margin-bottom:8px">五種款式的場合和感覺都不一樣，建議每種各有一件。點一下可以直接看那件。</p>
+      <div class="rec" id="rec"></div>
+    </section>
+    <section>
+      <h3>170–175 cm 的衣長與尺寸</h3>
+      <dl class="facts">
+        <dt>60–66 cm</dt><dd><b>短夾克的衣長</b>下擺落在腰下、胯骨上，腿的比例最長。這個身高穿短版比長版更吃香。</dd>
+        <dt>90–100 cm</dt><dd><b>大衣的衣長</b>下擺停在膝蓋上方最安全。超過 105 cm 會蓋到小腿，容易壓身高。</dd>
+        <dt>L 為主</dt><dd><b>尺寸</b>65–70 kg 多半落在 L。這些都是落肩寬鬆版，不用再放大一號。下單前要對店家尺寸表的肩寬和胸圍。</dd>
+        <dt>上短下長</dt><dd><b>下身與鞋子</b>高腰直筒或微寬褲，褲長蓋到鞋面，配 3–4 cm 厚底鞋。內搭下擺露出不要超過一個指節。</dd>
+      </dl>
+    </section>
+    <p class="note">同款式裡要多想一下的：B3 灰藍毛絨（淺色加毛絨會顯壯）、D3 立領寬版（版型很大，容易衣服穿人）、E2 長版大衣（要先確認衣長）。</p>
+  </div>
+</div>
+
+<script>
+const IG = "https://www.instagram.com/reel/";
+const XHS = "https://www.rednote.com/search_result?keyword=";
+// IG：[id, 標題, 按讚數, 語言]；中文在前、讚數高的在前
+const IG_SHORT = [
+  ["DRqqc0Sk5l7","整套不到 2000 的外套穿搭",13361,"中文"],
+  ["DdVYiWxBlQA","Barbour 秋冬男裝穿搭靈感",2204,"中文"],
+  ["DTc9E1Mk3ln","手工羊毛格紋夾克",171,"中文"],
+  ["DEkqAoVzMwb","90% 羊毛短版夾克",134,"中文"],
+  ["DRW5ql_E70q","超細緻羊毛夾克",121,"中文"],
+  ["DbzpxjBhDcC","LOEWE 卡車夾克",118,"中文"],
+  ["DAkwUiDOHdd","羊毛短夾克配深藍牛仔褲",408,"韓文"],
+  ["DerHrSXzE0U","羊毛短夾克男友風穿搭",60,"韓文"],
+  ["CzYpLJPhtbx","短版外套穿出好比例",46,"韓文"],
+  ["DQa13-VifsI","羊毛拉鍊短夾克多色比較",41,"韓文"]];
+const IG_D = [
+  ["DTQPLOOE10Z","羊羔毛夾克上班穿搭",249,"韓文"],
+  ["DEj-KLzTdig","冬季羊羔毛夾克合輯",94,"韓文"],
+  ["DEB34Hzvvwj","皮革毛領夾克",44,"韓文"],
+  ["DNA8I3fzRgc","黑色毛領飛行夾克",34,"韓文"],
+  ["DRtJUUdklAx","14 套羊羔毛夾克男友風",28,"韓文"],
+  ["DTWul2EkgSn","8 套羊羔毛夾克男友風",26,"韓文"],
+  ["DRO4smOEZRL","麂皮羊羔毛夾克穿搭",18,"韓文"]];
+const IG_E = [
+  ["DSzovzXk4kA","大衣選購指南",1586,"中文"],
+  ["DexpmdxvWXf","斯文風大衣穿法教學",845,"中文"],
+  ["CzL3f-jr9Vq","穿大衣為什麼顯矮",678,"中文"],
+  ["DQrDOD6DMu-","男士冬季大衣搭配思路",416,"中文"],
+  ["DRbpRBJkcFO","韓國男生冬天三件套",228,"中文"],
+  ["Dc51WzUgYqC","大衣如何顯腿長",174,"中文"],
+  ["CzTt3r7ry4j","大衣怎麼選到適合自己的",154,"中文"],
+  ["CYBo6_QhrJ2","女生喜歡的男生長大衣",4434,"韓文"],
+  ["C1hTO61Pq7v","穿大衣常見的 3 個錯誤",458,"韓文"],
+  ["C0iTuaNPnmM","172 cm 穿長大衣的技巧",0,"韓文"]];
+
+const GROUPS = [
+ {k:"A", short:"鈕扣短夾克", name:"撞色領羊毛短夾克・鈕扣款", desc:"翻領和衣身不同色，鈕扣門襟，短版落肩。最基本也最不會出錯，乾淨斯文。",
+  ig:IG_SHORT, igNote:"A・B・C 三種短夾克共用這組",
+  xhs:[["A1","秋冬本命夾克，一件穿出高級感","男生穿搭｜秋冬季的本命夹克一件穿出高级感"],["A2","短款羊毛夾克 + 雙褶西褲","日常优雅🖤短款羊毛夹克+双褶西裤=王炸组"],["A3","秋冬的質感是羊毛夾克給的","🍂秋冬的质感，是羊毛夹克给的"]],
+  items:[
+  {id:"A1", name:"黑色 × 灰領", pick:"首選", sw:[["#1b1b1d","黑"],["#6b6d72","灰領"]],
+   imgs:[["46B3D034-EC70-42E4-AB61-86385AB303E7.jpg","tall","黑色灰領短夾克配白T與復古藍牛仔褲"],["2B7C5980-B9EF-4EB3-A73E-80BA28149CCE.jpg","tall","黑色灰領短夾克配黑高領與深灰寬褲"],["FD8F4150-CB49-4B7E-B978-6E8516251E1F.jpg","std","黑色灰領短夾克配灰色高領毛衣"]],
+   why:"黑色讓上半身看起來收一點，灰領在臉旁邊提亮。衣長短，腿看起來長。",
+   how:"白 T + 復古藍牛仔褲 + 小白鞋是日常版；黑高領 + 深灰寬褲 + 厚底皮鞋是全深色版，這套最顯高。",
+   note:"三張照片是同款式，可能來自不同店家，版型會有一點差異。", rec:"日常最百搭的一件，牛仔褲和西褲都能配。"},
+  {id:"A2", name:"灰色 × 黑領", sw:[["#63666b","灰"],["#1b1b1d","黑領"]],
+   imgs:[["DA37CB53-B4B0-437D-8A29-E4B1FFA1D7E6.jpg","std","灰色黑領短夾克配黑色高領"]],
+   why:"A1 的反色版，比黑色柔和、書卷氣。灰色面積大，會比黑色稍微有份量。",
+   how:"內搭和褲子都用黑色把線條收回來，像照片這樣黑高領 + 黑褲就很好。"}
+ ]},
+ {k:"B", short:"毛絨短夾克", name:"毛絨質感撞色領短夾克", desc:"版型和 A 接近，面料是長毛絨面，比較軟、比較有質感。毛絨會增加一點份量，顏色選深的比較保險。",
+  ig:IG_SHORT, igNote:"A・B・C 三種短夾克共用這組",
+  xhs:[["B1","老錢貴氣感穿搭","今日份 ！老钱贵气感穿搭分享"],["B2","秋冬毛呢夾克外套分享","秋冬毛呢夹克外套分享❄️"],["B3","秋日午後的毛呢夾克","秋日午后"]],
+  items:[
+  {id:"B1", name:"深灰毛絨 × 黑領", pick:"首選", sw:[["#55575b","深灰"],["#161617","黑領"]],
+   imgs:[["clean/FD3C8174-040F-479D-A9E4-4171A522AFBF.jpg","std","深灰毛絨黑領夾克配白高領與灰圍巾"],["7B322AA6-5BFC-4D28-8237-B4CCC4643BBE.jpg","std","深灰毛絨黑領夾克側面"]],
+   why:"這個款式裡最穩的一件。深灰蓋掉毛絨的膨脹感，面料有光澤，看起來最有質感。",
+   how:"白色高領 + 灰圍巾 + 黑色寬褲。圍巾垂下來的直線可以拉長上身。",
+   note:"長毛面料比較需要照顧，下單前看一下成分和洗滌方式。", rec:"想穿得有質感的時候，約會或聚餐很適合。"},
+  {id:"B2", name:"灰色 × 黑針織雙層領", sw:[["#7b7e84","灰"],["#161617","黑針織領"]],
+   imgs:[["EF2183B5-0E4F-4074-95C8-74E35B6EFE49.jpg","wide","灰色雙層領短夾克配全黑內搭"]],
+   why:"黑色針織領疊在灰領上面，是兩層領的設計，細節比 A2 多一點。",
+   how:"裡面全黑最簡單。扣子不扣、敞開穿，中間一條黑色直線會顯瘦。"},
+  {id:"B3", name:"灰藍毛絨 × 黑針織領", warn:"先想一下", sw:[["#8a9aa8","灰藍"],["#1d1d1f","黑針織領"]],
+   imgs:[["AC99D7CE-F12A-4E3E-968B-6198C7211FE5.jpg","std","灰藍色毛絨短夾克配黑色針織領"]],
+   why:"顏色最特別，街上不容易撞衫。但淺色加毛絨，上半身會看起來大一號。",
+   how:"真的喜歡這個顏色再選。下身一定要黑色，內搭也用黑色壓住。"}
+ ]},
+ {k:"C", short:"拉鍊假兩件", name:"拉鍊假兩件夾克", desc:"外層是拉鍊，裡面多一道按扣內襟，看起來像疊穿了兩件。一件就有層次，也比鈕扣款俐落。",
+  ig:IG_SHORT, igNote:"A・B・C 三種短夾克共用這組",
+  xhs:[["C1","老錢風假兩件夾克","老钱风天花板！这件假两件夹克太会了"],["C2","這件外套的含金量","谁懂这件外套的含金量！"],["C3","輪廓感羊毛假兩件","轮廓著称的羊毛假两件！寻一位喜欢的宝子！"]],
+  items:[
+  {id:"C1", name:"炭黑 × 黑燈芯絨領", pick:"首選", sw:[["#2a2b2f","混色炭黑"],["#141415","燈芯絨領"]],
+   imgs:[["clean/6B3A9C95-C4FF-4573-8C2A-EE46C81F8DAF.jpg","std","炭黑拉鍊假兩件夾克正面配牛仔褲"],["clean/F434CE98-444D-4E06-8082-552BE268DBBA.jpg","std","炭黑夾克拉鍊拉上"],["clean/E7DC1F8C-B8E9-4D36-AB06-3D18C2F77346.jpg","std","炭黑夾克細節"],["clean/1E3527DC-70EF-4CFF-B921-40C38F21844F.jpg","std","炭黑夾克背面"]],
+   why:"混色炭黑近看有紋理，比純黑耐看。背面有一道橫向剪接，肩膀線條好看。",
+   how:"黑色高領 + 淺藍直筒牛仔褲。拉鍊拉一半，露出裡面那排按扣。",
+   note:"四張都是同一件。", rec:"一件就有層次，不用想內搭，出門最省事。"},
+  {id:"C2", name:"燕麥色 × 焦糖燈芯絨領", sw:[["#b9b2a6","燕麥"],["#8a4a1c","焦糖領"]],
+   imgs:[["clean/B73C7D11-2EEA-4C31-AFB9-05DB904F88EA.jpg","std","燕麥色夾克配焦糖燈芯絨領"]],
+   why:"C1 的淺色版，整體最溫柔，氣色會比較亮。淺色會稍微顯寬，也比較怕髒。",
+   how:"內搭用黑色，褲子用深灰西褲，把重心壓在下面。"},
+  {id:"C3", name:"黑色 × 灰領・拉鍊款", sw:[["#17171a","黑"],["#55575c","灰領"]],
+   imgs:[["81730304-8948-4FA6-AF6C-F96A72142A96.jpg","std","黑色灰領拉鍊夾克配白色針織與白褲"]],
+   why:"可以想成 A1 的拉鍊版。銀色拉鍊和按扣比較有型，領子可以立起來。",
+   how:"照片是白針織 + 白褲，很乾淨但白褲比較挑身材。換成黑色或深灰褲會更顯高。"}
+ ]},
+ {k:"D", short:"個性款", name:"個性款短夾克", desc:"三件風格各不相同，都比前面幾種更有態度。當第二件外套很好，當唯一一件要想清楚。",
+  ig:IG_D, igNote:"以羊羔毛夾克為主",
+  xhs:[["D1","焦糖棕麂皮外套，秋冬復古風","秋冬复古风穿搭｜焦糖棕麂皮外套太暖了✨"],["D2","毛領麂皮外套街拍","终于知道为什么他们背后说你人见人爱的魅魔"],["D3","焦糖麂皮絨配牛仔褲","焦糖麂皮绒阻断荒草微光~"]],
+  items:[
+  {id:"D1", name:"仿舊麂皮 × 羊羔毛領", pick:"首選", sw:[["#3a3b3d","仿舊黑灰"],["#151516","羊羔毛領"]],
+   imgs:[["clean/BD0E84A3-C989-4ECC-B81E-59FECADDCAE2.jpg","tall","仿舊麂皮羊羔毛領夾克配黑針織與白褲"]],
+   why:"所有外套裡看起來最保暖的。面料厚、下擺有羅紋，上半身會比較有份量，肩膀看起來比較寬。",
+   how:"裡面穿貼身的黑色針織，不要再疊厚的。褲子用直筒，白色或黑色都可以。", rec:"最冷的那幾天穿，風格也和其他幾件差最多。"},
+  {id:"D2", name:"水洗灰黑翻領夾克", sw:[["#3c3d40","水洗灰黑"]],
+   imgs:[["148BE38E-D17D-4033-9E99-7A942CA55058.jpg","std","水洗灰黑夾克疊穿針織開衫、襯衫與領帶"]],
+   why:"偏薄，適合秋天或不太冷的日子。本身低調，重點在裡面怎麼疊。",
+   how:"白襯衫 + 領帶 + 淺灰針織開衫是照片的學院風。不想打領帶，襯衫加開衫也成立。",
+   note:"這件最不保暖，冬天要靠裡面的層次。"},
+  {id:"D3", name:"灰色立領羊毛飛行夾克", warn:"先想一下", sw:[["#5b5d61","麻灰"]],
+   imgs:[["clean/72DC22D1-2ABD-498A-9D2A-E8A1C5A80E41.jpg","std","灰色高立領寬版羊毛夾克"]],
+   why:"高立領很擋風，照片很有氛圍。但版型很寬、領子很高，170–175 穿容易變成衣服在穿人。",
+   how:"要選就挑正常尺寸，不要放大。下身用黑色寬褲，鞋子要有厚度。"}
+ ]},
+ {k:"E", short:"雙排扣大衣", name:"雙排扣大衣", desc:"最正式、最保暖。170–175 穿大衣的關鍵是長度：到膝上就好看，過膝就要靠鞋子和同色褲子救。",
+  ig:IG_E, igNote:"",
+  xhs:[["E1","深棕黑長款雙排扣大衣，通勤低調俐落","男士深棕黑长款双排扣大衣，通勤低调利落"],["E2","棕色大衣今日穿搭","OOTD｜今天穿什么"],["E3","棕色大衣的配色","棕色大衣千万别搭配咖色❓拒绝显黑穿搭廉价❌"]],
+  items:[
+  {id:"E1", name:"深棕中長大衣", pick:"首選", sw:[["#3a2c24","深棕"]],
+   imgs:[["clean/5419380D-B2DB-43D1-B5AF-0976F2CFA16F.jpg","std","深棕雙排扣大衣配黑色寬褲與厚底皮鞋"],["B337D351-28E0-4063-94CC-EE21D42D2346.jpg","tall","深棕雙排扣大衣全身"]],
+   why:"長度到大腿中段，是 170–175 最適合的大衣長度。深棕比黑色溫暖，也不會太老氣。",
+   how:"黑高領 + 棕色拉鍊針織 + 黑色垂感寬褲 + 黑色厚底皮鞋。大衣敞開穿，中間的直線會拉長身形。",
+   note:"兩張是同一件。", rec:"正式場合用，長度到大腿，這個身高撐得起來。"},
+  {id:"E2", name:"深色長版大衣", warn:"先看衣長", sw:[["#231d1a","深棕黑"]],
+   imgs:[["clean/366A6989-5189-4D41-A879-A070B3F86DB2.jpg","std","深色長版雙排扣大衣"]],
+   why:"氣場最強。但模特兒很高，同一件穿在 170–175 身上會到小腿，容易壓身高。",
+   how:"衣長在 105 cm 以內再考慮。褲子和大衣同色，鞋子要厚底，把腿接長。"}
+ ]}
+];
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const likes = n => n >= 10000 ? (n / 10000).toFixed(1) + " 萬" : n.toLocaleString();
+const KEYS = GROUPS.map(g => g.k);
+
+document.getElementById("tabs").innerHTML = GROUPS.map(g =>
+  `<button type="button" class="tab" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${g.items[0].imgs[0][0]}" alt=""><span>${g.short}</span></button>`).join("");
+
+document.getElementById("views").innerHTML = GROUPS.map(g => `
+  <section class="view" id="view-${g.k}" hidden>
+    <div class="g-head"><span class="kicker">款式 ${g.k}</span><h2>${g.name}</h2><p>${g.desc}</p></div>
+    ${g.items.map(it => `
+    <article class="card" id="${it.id}">
+      <div class="shots" tabindex="0" aria-label="${it.id} 照片">${it.imgs.map(([f,c,a]) => `<img class="${c}" src="${f}" alt="${esc(a)}">`).join("")}</div>
+      <div class="card-body">
+        <div class="card-top"><span class="code">${it.id}</span><h3>${it.name}</h3>${it.pick ? `<span class="badge">${it.pick}</span>` : ""}${it.warn ? `<span class="badge warn">${it.warn}</span>` : ""}</div>
+        <div class="sw">${it.sw.map(([c,n]) => `<i style="background:${c}"></i>${n}`).join("　")}${it.imgs.length > 1 ? `<span class="more">　← 照片可左右滑 →</span>` : ""}</div>
+        <dl class="kv"><dt>穿起來</dt><dd>${it.why}</dd><dt>怎麼搭</dt><dd>${it.how}</dd></dl>
+        ${it.note ? `<p class="note">${it.note}</p>` : ""}
+      </div>
+    </article>`).join("")}
+    <section class="refs">
+      <h3>穿搭參考</h3>
+      <div>
+        <div class="rail-head"><b>Instagram 影片</b><span>${g.ig.length} 則${g.igNote ? "・" + g.igNote : ""}</span></div>
+        <div class="rail">${g.ig.map(([id,t,n,l]) => `
+          <a class="ref ig" href="${IG}${id}/" target="_blank" rel="noopener"><div class="cover"><img src="video/${id}.jpg" alt="" loading="lazy"><span class="play"></span><div class="meta"><span>${n ? "♥ " + likes(n) : ""}</span><span>${l}</span></div></div><strong>${t}</strong></a>`).join("")}</div>
+      </div>
+      <div>
+        <div class="rail-head"><b>小紅書</b><span>點封面會到小紅書搜尋這篇</span></div>
+        <div class="rail">${g.xhs.map(([f,t,q]) => `
+          <a class="ref xhs" href="${XHS}${encodeURIComponent(q)}" target="_blank" rel="noopener"><div class="cover"><img src="xhs/${f}.jpg" alt="" loading="lazy"></div><strong>${t}</strong></a>`).join("")}</div>
+      </div>
+      <p class="note">參考影片和貼文是款式相近的穿搭，不是同一件，用來看上身的感覺。</p>
+    </section>
+  </section>`).join("");
+
+document.getElementById("rec").innerHTML = GROUPS.map(g => { const it = g.items.find(x => x.rec); return `
+  <button type="button" data-go="${it.id}" id="rec-${it.id}"><img src="${it.imgs[0][0]}" alt=""><div><small>款式 ${g.k}・${g.short}</small><b>${it.id}　${it.name}</b><span>${it.rec}</span></div></button>`; }).join("");
+
+const sheet = document.getElementById("sheet");
+const openSheet = () => { sheet.hidden = false; document.getElementById("close-sheet").focus(); };
+const closeSheet = () => { sheet.hidden = true; };
+document.getElementById("open-sheet").addEventListener("click", openSheet);
+document.getElementById("close-sheet").addEventListener("click", closeSheet);
+sheet.addEventListener("click", e => { if (e.target === sheet) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+
+function show(view, itemId){
+  if (!KEYS.includes(view)) view = "A";
+  KEYS.forEach(k => { document.getElementById("view-" + k).hidden = k !== view; });
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.go === view));
+  const target = itemId && document.getElementById(itemId);
+  if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+}
+function route(){
+  const h = location.hash.slice(1);
+  show(h ? h[0] : "A", h.length > 1 ? h : null);
+}
+document.addEventListener("click", e => {
+  const go = e.target.closest("[data-go]"); if (!go) return;
+  closeSheet();
+  const next = "#" + go.dataset.go;
+  if (location.hash === next) route(); else location.hash = next;
+});
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
