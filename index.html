@@ -370,15 +370,16 @@ const M = f => "m/" + webp(f);   // 壓縮後的大圖
 const T = f => "t/" + webp(f);   // 小縮圖（款式列、排行榜、建議清單）
 const TH = it => T(it.thumb || it.imgs[0][0]);   // 每款的縮圖，可用 thumb 指定較適合的照片
 const likes = n => n >= 10000 ? (n / 10000).toFixed(1) + " 萬" : n.toLocaleString();
-const KEYS = GROUPS.map(g => g.k).concat("R");
+const KEYS = ["R"].concat(GROUPS.map(g => g.k));
 const N = GROUPS.length;
 const ITEMS = GROUPS.flatMap(g => g.items.flatMap(it => it.colors
   ? it.colors.map(([color, hex, thumb], i) => ({key: it.id + "_" + i, id: it.id, style: g.short, name: it.rname || it.name, color, hex, thumb}))
   : [{key: it.id, id: it.id, style: g.short, name: it.name, thumb: it.thumb || it.imgs[0][0]}]));   // 排行榜用：每件外套、每個顏色各一個
 
-document.getElementById("tabs").innerHTML = GROUPS.map(g =>
-  `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${TH(g.items[0])}" alt=""><span>${g.short}</span></button>`).join("") +
-  `<button type="button" class="tab press" role="tab" data-go="R" id="tab-R"><i class="gicon">1·2·3</i><span>外套排行榜</span></button>`;
+document.getElementById("tabs").innerHTML =
+  `<button type="button" class="tab press" role="tab" data-go="R" id="tab-R"><i class="gicon">1·2·3</i><span>外套排行榜</span></button>` +
+  GROUPS.map(g =>
+  `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${TH(g.items[0])}" alt=""><span>${g.short}</span></button>`).join("");
 
 const GAME = `
   <section class="view" id="view-R" hidden>
@@ -483,7 +484,7 @@ sheet.addEventListener("click", e => { if (e.target === sheet) closeSheet(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
 
 function show(view, itemId){
-  if (!KEYS.includes(view)) view = "A";
+  if (!KEYS.includes(view)) view = "R";
   KEYS.forEach(k => { document.getElementById("view-" + k).hidden = k !== view; });
   document.querySelectorAll(".tab").forEach(t => {
     const on = t.dataset.go === view;
@@ -496,7 +497,7 @@ function show(view, itemId){
 }
 function route(){
   const h = location.hash.slice(1);
-  show(h ? h[0] : "A", h.length > 1 ? h : null);
+  show(h ? h[0] : "R", h.length > 1 ? h : null);
 }
 document.addEventListener("click", e => {
   const go = e.target.closest("[data-go]"); if (!go) return;
