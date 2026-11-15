@@ -357,11 +357,11 @@ const N = GROUPS.length;
 
 document.getElementById("tabs").innerHTML = GROUPS.map(g =>
   `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${g.items[0].imgs[0][0]}" alt=""><span>${g.short}</span></button>`).join("") +
-  `<button type="button" class="tab press" role="tab" data-go="R" id="tab-R"><i class="gicon">1·2·3</i><span>排名遊戲</span></button>`;
+  `<button type="button" class="tab press" role="tab" data-go="R" id="tab-R"><i class="gicon">1·2·3</i><span>外套排行榜</span></button>`;
 
 const GAME = `
   <section class="view" id="view-R" hidden>
-    <div class="g-head"><span class="kicker">小遊戲</span><h2>排出你的喜好順序</h2><p>照喜歡的順序一個一個點，點到的會標上名次。點錯了再點一次就取消。排完可以存成圖片傳給我。</p></div>
+    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>從最喜歡的開始，一個一個點，點到的會標上名次。點錯了再點一次就取消。排完可以把排行榜存成圖片傳給我。</p></div>
     <div class="rank-status" id="rank-status" aria-live="polite">已排 0 / ${N}</div>
     <div class="rank-grid">${GROUPS.map(g => `
       <button type="button" class="rk press" data-rk="${g.k}" id="rk-${g.k}" aria-pressed="false"><img src="${g.items[0].imgs[0][0]}" alt=""><em>點我</em><span><small>款式 ${g.k}</small>${g.short}</span></button>`).join("")}</div>
@@ -370,8 +370,8 @@ const GAME = `
       <button type="button" class="btn primary press" id="rank-make" disabled>排完後產生圖片</button>
     </div>
     <div class="rank-out" id="rank-out" hidden>
-      <img id="rank-img" alt="外套款式排名圖片">
-      <a class="btn primary press" id="rank-dl" download="外套款式排名.png">下載圖片</a>
+      <img id="rank-img" alt="我的外套排行榜圖片">
+      <a class="btn primary press" id="rank-dl" download="我的外套排行榜.png">下載排行榜圖片</a>
       <p class="note">如果按下載沒有反應，長按上面的圖片選「儲存圖片」也可以。</p>
     </div>
   </section>`;
@@ -491,9 +491,9 @@ function rankRender(){
     b.setAttribute("aria-pressed", i >= 0);
     b.querySelector("em").textContent = i >= 0 ? i + 1 : "點我";
   });
-  rkStatus.textContent = order.length === N ? "排好了，可以產生圖片" : `已排 ${order.length} / ${N}，接著點第 ${order.length + 1} 名`;
+  rkStatus.textContent = order.length === N ? "排好了，可以產生排行榜圖片" : `已排 ${order.length} / ${N}，接著點第 ${order.length + 1} 名`;
   rkMake.disabled = order.length !== N;
-  rkMake.textContent = order.length === N ? "產生排名圖片" : "排完後產生圖片";
+  rkMake.textContent = order.length === N ? "產生排行榜圖片" : "排完後產生圖片";
   rkOut.hidden = true;
 }
 document.addEventListener("click", e => {
@@ -513,7 +513,7 @@ rkMake.addEventListener("click", async () => {
     const c = cv.getContext("2d");
     c.fillStyle = "#ECEDEF"; c.fillRect(0, 0, W, H);
     c.fillStyle = "#2D4B73"; c.font = '500 26px "DM Mono", monospace'; c.fillText("WINTER OUTERWEAR", 70, 86);
-    c.fillStyle = "#1E2126"; c.font = '900 64px "Noto Serif TC", serif'; c.fillText("我的外套款式排名", 70, 168);
+    c.fillStyle = "#1E2126"; c.font = '900 64px "Noto Serif TC", serif'; c.fillText("我的外套排行榜", 70, 168);
     for (let i = 0; i < N; i++) {
       const g = GROUPS.find(x => x.k === order[i]), y = top + i * rowH;
       c.fillStyle = "#F9F9FA"; c.beginPath(); c.roundRect(60, y, W - 120, rowH - 18, 22); c.fill();
