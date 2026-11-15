@@ -9,7 +9,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
 <style>
-/* 版面概念：手機 App。上方標題列、下方五個款式分頁、中間是一欄卡片（外套照片可左右滑、底下接穿搭參考）。建議與尺寸收在彈出面板。 */
+/* 版面概念：手機 App。上方標題列、下方可左右滑的款式分頁、中間是一欄卡片（外套照片可左右滑、底下接穿搭參考）。建議與尺寸收在彈出面板。 */
 :root{
   --bg:#ECEDEF; --surface:#F9F9FA; --ink:#1E2126; --muted:#5A616B; --line:#D2D5DA;
   --accent:#2D4B73; --accent-soft:#DCE4EF; --on-accent:#FFFFFF; --scrim:rgba(20,22,26,.5);
@@ -48,9 +48,10 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 /* 下方款式分頁 */
 .tabbar{position:fixed;bottom:0;left:0;right:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabbar-in{height:var(--tab-h);display:grid;grid-template-columns:repeat(5,1fr);max-width:calc(var(--col) + 32px);margin:0 auto;
+.tabbar-in{height:var(--tab-h);display:flex;overflow-x:auto;scrollbar-width:none;max-width:calc(var(--col) + 32px);margin:0 auto;
   padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
-.tab{cursor:pointer;background:transparent;border:0;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;color:var(--muted)}
+.tabbar-in::-webkit-scrollbar{display:none}
+.tab{flex:1 0 72px;cursor:pointer;background:transparent;border:0;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;color:var(--muted)}
 .tab img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center 25%;outline:2px solid transparent;outline-offset:2px;opacity:.75}
 .tab span{font-size:10.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tab[aria-selected="true"]{color:var(--ink)}
@@ -70,6 +71,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .shots img{flex:none;height:clamp(340px,112vw,470px);width:auto;max-width:100%;object-fit:cover;object-position:center top;scroll-snap-align:start;display:block}
 .shots img.tall{aspect-ratio:9/16}
 .shots img.std{aspect-ratio:3/4}
+.shots img.sq{aspect-ratio:1/1}
 .shots img.wide{aspect-ratio:4/3;height:auto;width:100%}
 .shots img:only-child{width:100%;height:auto;max-height:560px}
 .card-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px}
@@ -143,7 +145,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
     <div class="panel-top"><h2 id="sheet-title">建議與尺寸</h2><button type="button" class="close" id="close-sheet">關閉</button></div>
     <section>
       <h3>每種款式建議的那一件</h3>
-      <p class="note" style="margin-bottom:8px">五種款式的場合和感覺都不一樣，建議每種各有一件。點一下可以直接看那件。</p>
+      <p class="note" style="margin-bottom:8px">每種款式的場合和感覺都不一樣，建議每種各有一件。點一下可以直接看那件。</p>
       <div class="rec" id="rec"></div>
     </section>
     <section>
@@ -155,7 +157,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
         <dt>上短下長</dt><dd><b>下身與鞋子</b>高腰直筒或微寬褲，褲長蓋到鞋面，配 3–4 cm 厚底鞋。內搭下擺露出不要超過一個指節。</dd>
       </dl>
     </section>
-    <p class="note">同款式裡要多想一下的：B3 灰藍毛絨（淺色加毛絨會顯壯）、D3 立領寬版（版型很大，容易衣服穿人）、E2 長版大衣（要先確認衣長）。</p>
+    <p class="note">同款式裡要多想一下的：B3 灰藍毛絨（淺色加毛絨會顯壯）、D3 立領寬版（版型很大，容易衣服穿人）、E2 長版大衣和 H1 連帽長版（要先確認衣長）。</p>
   </div>
 </div>
 
@@ -276,6 +278,33 @@ const GROUPS = [
    imgs:[["clean/366A6989-5189-4D41-A879-A070B3F86DB2.jpg","std","深色長版雙排扣大衣"]],
    why:"氣場最強。但模特兒很高，同一件穿在 170–175 身上會到小腿，容易壓身高。",
    how:"衣長在 105 cm 以內再考慮。褲子和大衣同色，鞋子要厚底，把腿接長。"}
+ ]},
+ {k:"F", short:"麂皮夾克", name:"麂皮拉鍊短夾克", desc:"麂皮絨面的翻領拉鍊短夾克。比羊毛夾克休閒，帶一點復古感。",
+  ig:[], igNote:"", xhs:[],
+  items:[
+  {id:"F1", name:"麂皮拉鍊夾克・棕／黑", pick:"首選", sw:[["#6b4a2b","棕"],["#1a1a1c","黑"]],
+   imgs:[["S__119545867_0.jpg","sq","棕色麂皮拉鍊夾克配黑色高領與深灰牛仔褲"],["clean/S__119545868.jpg","sq","黑色麂皮拉鍊夾克配灰色針織與卡其褲"]],
+   why:"翻領加拉鍊，胸前有 V 形剪接，肩線挺。麂皮絨面比羊毛休閒，復古感強。短版，腿看起來長。",
+   how:"棕色配黑色高領 + 深灰牛仔褲，和照片一樣。黑色配灰色針織 + 卡其褲，裡面露一點淺色才不會太沉。",
+   note:"同款兩色。棕色和其他黑灰外套差異最大，黑色最好搭。麂皮怕水，雨天不適合。", rec:"想要一件休閒復古的。棕色和其他外套最不重複。"}
+ ]},
+ {k:"G", short:"加絨夾克", name:"加絨立領夾克", desc:"防風外層加整件絨毛內裡的機能夾克。最休閒，也最實穿保暖。",
+  ig:[], igNote:"", xhs:[],
+  items:[
+  {id:"G1", name:"加絨立領夾克・黑／棕", pick:"首選", sw:[["#1b1b1d","黑"],["#5a3a2a","棕"],["#b9a48c","卡其絨內裡"]],
+   imgs:[["clean/S__119545864_0.jpg","sq","黑色加絨立領夾克"],["clean/S__119545869.jpg","sq","棕色加絨立領夾克"],["S__119545866_0.jpg","std","夾克內裡整件加絨"],["clean/S__119545865_0.jpg","std","袖口、拉鍊、口袋、下擺細節"]],
+   why:"防風面料，整件內裡加絨，領口翻出來是卡其色絨毛。鬆緊袖口和下擺，版型偏寬，上身會比較蓬。",
+   how:"連帽衫或針織 + 直筒牛仔褲或工作褲 + 運動鞋。偏休閒戶外，騎車、出遊很實用，正式場合不適合。",
+   note:"同款兩色。只有商品平拍圖，沒有真人試穿，版型要看尺寸表。不要買大，鬆緊下擺會讓過大的版型更蓬。", rec:"騎車、出遊、最冷的日子當實穿保暖用。"}
+ ]},
+ {k:"H", short:"連帽長版", name:"連帽長版外套", desc:"有帽子、長度到膝蓋附近的鋪棉外套。擋風範圍最大。",
+  ig:[], igNote:"", xhs:[],
+  items:[
+  {id:"H1", name:"連帽長版外套・黑／軍綠", pick:"首選", warn:"先看衣長", sw:[["#19191b","黑"],["#5c5a3a","軍綠"]],
+   imgs:[["S__119545863_0.jpg","sq","黑色連帽長版外套配灰色高領"],["S__119545862_0.jpg","sq","軍綠連帽長版外套配黑色高領"]],
+   why:"西裝領外層加連帽拉鍊內襟，看起來像疊穿兩件。長度在膝蓋上下，能蓋住大腿，擋風最好。",
+   how:"高領 + 黑色直筒褲 + 靴子或厚底鞋，敞開穿拉出直線。黑色最顯瘦；軍綠配黑色內搭和黑褲。",
+   note:"同款兩色。170–175 要確認衣長在 100 cm 上下，太長會壓身高。", rec:"下雨颳風、要長時間待在戶外的日子。"}
  ]}
 ];
 
@@ -299,7 +328,7 @@ document.getElementById("views").innerHTML = GROUPS.map(g => `
         ${it.note ? `<p class="note">${it.note}</p>` : ""}
       </div>
     </article>`).join("")}
-    <section class="refs">
+    <section class="refs" ${g.ig.length || g.xhs.length ? "" : "hidden"}>
       <h3>穿搭參考</h3>
       <div>
         <div class="rail-head"><b>Instagram 影片</b><span>${g.ig.length} 則${g.igNote ? "・" + g.igNote : ""}</span></div>
@@ -329,7 +358,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet()
 function show(view, itemId){
   if (!KEYS.includes(view)) view = "A";
   KEYS.forEach(k => { document.getElementById("view-" + k).hidden = k !== view; });
-  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.go === view));
+  document.querySelectorAll(".tab").forEach(t => { const on = t.dataset.go === view; t.setAttribute("aria-selected", on); if (on) t.scrollIntoView({block:"nearest", inline:"center"}); });
   const target = itemId && document.getElementById(itemId);
   if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
 }
