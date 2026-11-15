@@ -155,8 +155,30 @@ button:focus-visible,a:focus-visible,.shots:focus-visible{outline:2px solid var(
   font:500 12px/38px var(--mono);font-style:normal;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.25)}
 .rk[aria-pressed="true"]{border-color:var(--accent)}
 .rk[aria-pressed="true"] em{background:var(--accent);color:var(--on-accent);font-size:18px}
+.rkc{display:flex;align-items:center;gap:5px;margin-top:2px;font-weight:500;font-size:12px;color:var(--muted)}
+.rkc i{width:12px;height:12px;border-radius:50%;border:1px solid var(--line);display:inline-block}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 11px 4px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
 .rank-actions{display:grid;grid-template-columns:auto 1fr;gap:10px}
-.btn{cursor:pointer;border-radius:14px;min-height:50px;padding:10px 18px;font-size:15px;font-weight:700;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);
+/* 排行榜：緊湊版（小縮圖四欄、上方固定排名條、按鈕固定在下方） */
+.rank-strip{position:sticky;top:calc(var(--top-h) + env(safe-area-inset-top,0px));z-index:4;background:var(--bg);padding:8px 0 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.rank-picks{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;min-height:56px;align-items:center}
+.rank-picks::-webkit-scrollbar{display:none}
+.rank-picks .hint{font-size:13px;color:var(--muted)}
+.rank-status:empty{display:none}
+.rank-picks.empty{min-height:0}
+.mini{position:relative;flex:none;width:42px;height:54px;padding:0;border:0;border-radius:8px;overflow:hidden;cursor:pointer;background:var(--line)}
+.mini img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.mini b{position:absolute;left:0;bottom:0;min-width:18px;padding:0 4px;border-radius:0 8px 0 0;background:var(--accent);color:var(--on-accent);font:500 12px/18px var(--mono);text-align:center}
+.rank-grid{grid-template-columns:repeat(4,1fr);gap:8px}
+.rk{border-width:2px;border-radius:12px;box-shadow:none}
+.rk em{display:none;top:5px;left:5px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;box-shadow:none}
+.rk[aria-pressed="true"] em{display:block;font:500 13px/22px var(--mono)}
+.rk span{display:flex;align-items:center;gap:4px;padding:5px 6px 7px;font-size:11px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden}
+.rk strong{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--accent)}
+.rk span i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line);display:inline-block;flex:none}
+.rank-actions{position:sticky;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom,0px) + 6px);z-index:3;background:var(--bg);padding:8px 0}
+.btn{white-space:nowrap;cursor:pointer;border-radius:14px;min-height:50px;padding:10px 18px;font-size:15px;font-weight:700;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);
   text-align:center;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
 .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .btn[disabled]{opacity:.4;cursor:default;box-shadow:none}
@@ -253,7 +275,7 @@ const GROUPS = [
   ig:[["video2","DfQXa3VzzK8","灰色毛絨立領夾克（面料參考）",106,"韓文"],["video2","DF0GjffzGQ8","灰色毛絨翻領外套（面料參考）",169,"韓文"]],
   xhs:[["B1","燈芯絨翻領 100% 羊毛夾克","灯芯绒翻领100%羊毛收腰夹克搭配"],["B3","170 cm 三套羊毛穿搭，視覺增高","170男生必看！三套羊毛穿搭让你视觉增高5cm"],["B4","冬季厚外套合集","过冬的外套我有了！！！实用又时髦的冬季外套"],["B5","冬日通勤毛呢夾克","气场全开的冬日通勤战衣"]],
   items:[
-  {id:"B1", name:"灰色／灰藍毛絨 × 黑針織領", thumb:"AC99D7CE-F12A-4E3E-968B-6198C7211FE5.jpg", pick:"首選", warn:"灰藍色先想一下", sw:[["#7b7e84","灰"],["#8a9aa8","灰藍"],["#161617","黑針織領"]],
+  {id:"B1", rname:"毛絨短夾克 × 黑針織領", colors:[["灰","#7b7e84","EF2183B5-0E4F-4074-95C8-74E35B6EFE49.jpg"],["灰藍","#8a9aa8","AC99D7CE-F12A-4E3E-968B-6198C7211FE5.jpg"]], name:"灰色／灰藍毛絨 × 黑針織領", thumb:"AC99D7CE-F12A-4E3E-968B-6198C7211FE5.jpg", pick:"首選", warn:"灰藍色先想一下", sw:[["#7b7e84","灰"],["#8a9aa8","灰藍"],["#161617","黑針織領"]],
    imgs:[["EF2183B5-0E4F-4074-95C8-74E35B6EFE49.jpg","wide","灰色雙層領短夾克配全黑內搭"],["AC99D7CE-F12A-4E3E-968B-6198C7211FE5.jpg","std","灰藍色毛絨短夾克配黑色針織領"]],
    why:"黑色針織領疊在灰領上面，是兩層領的設計，細節比 A2 多一點。毛絨面料軟、有質感；灰藍色最特別，街上不容易撞衫。",
    how:"灰色：裡面全黑最簡單，扣子不扣、敞開穿，中間一條黑色直線會顯瘦。灰藍色：淺色加毛絨會讓上半身看起來大一號，下身和內搭都要用黑色壓住。",
@@ -299,7 +321,7 @@ const GROUPS = [
   ig:[["video","DSzovzXk4kA","大衣選購指南",1586,"中文"],["video","DexpmdxvWXf","斯文風大衣穿法教學",845,"中文"],["video","CzL3f-jr9Vq","穿大衣為什麼顯矮",678,"中文"],["video","DQrDOD6DMu-","男士冬季大衣搭配思路",416,"中文"],["video","DRbpRBJkcFO","韓國男生冬天三件套",228,"中文"],["video","Dc51WzUgYqC","大衣如何顯腿長",174,"中文"],["video","CzTt3r7ry4j","大衣怎麼選到適合自己的",154,"中文"],["video","CYBo6_QhrJ2","女生喜歡的男生長大衣",4434,"韓文"],["video","C1hTO61Pq7v","穿大衣常見的 3 個錯誤",458,"韓文"],["video","C0iTuaNPnmM","172 cm 穿長大衣的技巧",0,"韓文"]],
   xhs:[["E1","深色雙排扣大衣","宋威龙 ︱好适合穿大衣"],["E2","棕色大衣配米白高領","美拉德大衣，上身直接氛围感拉满"],["E3","棕色長大衣","还得是棕色大衣"],["E4","深棕黑長款雙排扣大衣","男士深棕黑长款双排扣大衣，通勤低调利落"],["E5","深色毛呢大衣外景","电商呢子大衣外景拍摄"],["E6","168–175 cm 大衣長度怎麼選","168+男生买大衣，衣长就是命脉"]],
   items:[
-  {id:"E1", name:"深棕雙排扣大衣", pick:"首選", warn:"先看衣長", sw:[["#3a2c24","深棕"],["#231d1a","深棕黑"]],
+  {id:"E1", name:"深棕雙排扣大衣", pick:"首選", warn:"先看衣長", sw:[["#3a2c24","深棕"]],
    imgs:[["clean/5419380D-B2DB-43D1-B5AF-0976F2CFA16F.jpg","std","深棕雙排扣大衣配黑色寬褲與厚底皮鞋"],["B337D351-28E0-4063-94CC-EE21D42D2346.jpg","tall","深棕雙排扣大衣全身"],["clean/366A6989-5189-4D41-A879-A070B3F86DB2.jpg","std","深色長版雙排扣大衣"]],
    why:"深棕比黑色溫暖，也不會太老氣。長度到大腿中段，是 170–175 最適合的大衣長度。",
    how:"黑高領 + 棕色拉鍊針織 + 黑色垂感寬褲 + 黑色厚底皮鞋。大衣敞開穿，中間的直線會拉長身形。",
@@ -309,7 +331,7 @@ const GROUPS = [
   ig:[["video2","DWz_7JYD2pB","棕色絨面麂皮夾克",2,"韓文"],["video2","DVsO9svE8MS","棕色麂皮夾克配寬牛仔褲",3,"韓文"],["video2","DPqkaUIEnaU","軟麂皮夾克（單品）",5,"中文"],["video2","DEkHxr3v2sT","厚麂皮卡車夾克",0,"中文"],["video2","DUU-2IeEgfx","卡其麂皮毛領夾克",59,"中文"]],
   xhs:[["F1","棕色麂皮夾克，乾淨簡約","男生穿搭、干净简约就够了"],["F2","棕色麂皮夾克配卡其褲","40+男人，夹克别只买黑色"],["F3","復古棕色麂皮夾克","复古棕色麂皮夹克｜男生秋日美拉德穿搭"],["F4","黑色麂皮絨夾克穿搭","男士秋冬穿搭|黑色麂皮绒夹克外套穿搭推荐"],["F5","翻領麂皮夾克","女友熬夜挑的麂皮夹克，真的帅夯了"],["F6","棕色麂皮夾克輕熟穿搭","7套可直接抄作业｜男士秋日轻熟穿搭"]],
   items:[
-  {id:"F1", name:"麂皮拉鍊夾克・棕／黑", pick:"首選", sw:[["#6b4a2b","棕"],["#1a1a1c","黑"]],
+  {id:"F1", rname:"麂皮拉鍊夾克", colors:[["棕","#6b4a2b","S__119545880_0.jpg"],["黑","#1a1a1c","clean/S__119545868.jpg"]], name:"麂皮拉鍊夾克・棕／黑", pick:"首選", sw:[["#6b4a2b","棕"],["#1a1a1c","黑"]],
    imgs:[["S__119545880_0.jpg","std","棕色麂皮拉鍊夾克配黑色上衣與黑色直筒褲"],["S__119545867_0.jpg","sq","棕色麂皮拉鍊夾克配黑色高領與深灰牛仔褲"],["clean/S__119545868.jpg","sq","黑色麂皮拉鍊夾克配灰色針織與卡其褲"]],
    why:"翻領加拉鍊，胸前有 V 形剪接，肩線挺。麂皮絨面比羊毛休閒，復古感強。短版，腿看起來長。",
    how:"棕色配黑色上衣 + 黑色或深灰褲子，繫一條棕色皮帶呼應。黑色配灰色針織 + 卡其褲，裡面露一點淺色才不會太沉。",
@@ -319,12 +341,12 @@ const GROUPS = [
   ig:[["video2","DR1jZIbARi-","內裡加絨夾克實穿",168,"韓文"],["video2","DTr9ZiWkpy4","內刷毛毛領外套",0,"中文"],["video2","DE4WMPXSCGu","加絨卡車夾克",130,"韓文"],["video2","DRMN8pME024","刷毛鋪棉外套",305,"中文"]],
   xhs:[["G1","內裡羊羔絨夾克","秋冬这件灯芯绒夹克又帅又暖 内里羊羔绒"],["G2","黑色立領夾克配灰褲","简简单单的高级感穿搭"],["G3","立領夾克配工裝褲","立领羽绒服夹克+工装裤｜沉稳质感的秋冬穿搭"],["G4","綠色工裝風疊穿","OOTD|绿色系美式工装风叠穿搭配分享"],["G5","深色立領夾克","立领夹克 男 穿搭"]],
   items:[
-  {id:"G2", name:"仿麂皮加絨棒球領夾克・黑／棕／米", pick:"首選", sw:[["#1d1f24","黑"],["#8a5a2b","棕"],["#b9b0a0","米"],["#7a5f58","絨內裡"]],
+  {id:"G2", rname:"仿麂皮加絨棒球領夾克", colors:[["黑","#1d1f24","clean/S__119545877_0.jpg"],["棕","#8a5a2b","clean/S__119545878_0.jpg"],["米","#b9b0a0","clean/S__119545879_0.jpg"]], name:"仿麂皮加絨棒球領夾克・黑／棕／米", pick:"首選", sw:[["#1d1f24","黑"],["#8a5a2b","棕"],["#b9b0a0","米"],["#7a5f58","絨內裡"]],
    imgs:[["clean/S__119545877_0.jpg","sq","黑色仿麂皮加絨棒球領夾克"],["clean/S__119545878_0.jpg","sq","棕色仿麂皮加絨棒球領夾克"],["clean/S__119545879_0.jpg","sq","米色仿麂皮加絨棒球領夾克"]],
    why:"仿麂皮面料加整件絨毛內裡，羅紋立領、袖口、下擺，是棒球外套的版型。下擺收得住，上身不會太蓬。",
    how:"黑色配灰色帽 T + 黑色直筒褲；棕色配白 T + 深藍牛仔褲；米色最亮，要配深色褲子。內裡很厚，裡面穿薄的就好。",
    note:"同款三色。只有商品圖，沒有真人試穿，實際顏色和質感以實品為準。", rec:"騎車、出遊、最冷的日子當實穿保暖用。"},
-  {id:"G1", name:"防風加絨立領夾克・黑／棕", sw:[["#1b1b1d","黑"],["#5a3a2a","棕"],["#b9a48c","卡其絨內裡"]],
+  {id:"G1", rname:"防風加絨立領夾克", colors:[["黑","#1b1b1d","clean/S__119545864_0.jpg"],["棕","#5a3a2a","clean/S__119545869.jpg"]], name:"防風加絨立領夾克・黑／棕", sw:[["#1b1b1d","黑"],["#5a3a2a","棕"],["#b9a48c","卡其絨內裡"]],
    imgs:[["clean/S__119545864_0.jpg","sq","黑色加絨立領夾克"],["clean/S__119545869.jpg","sq","棕色加絨立領夾克"],["clean/S__119545872_0.jpg","sq","黑色與棕色並排"],["S__119545871_0.jpg","sq","棕色夾克背面"],["S__119545866_0.jpg","std","夾克內裡整件加絨"],["clean/S__119545865_0.jpg","std","袖口、拉鍊、口袋、下擺細節"]],
    why:"防風面料，整件內裡加絨，領口翻出來是卡其色絨毛。鬆緊袖口和下擺，版型偏寬，上身會比較蓬。",
    how:"連帽衫或針織 + 直筒牛仔褲或工作褲 + 運動鞋。偏休閒戶外，騎車、出遊很實用，正式場合不適合。",
@@ -334,7 +356,7 @@ const GROUPS = [
   ig:[["video2","DPLiuBKE6zw","軍綠連帽派克外套",154,"韓文"],["video2","DfOQU3juid-","可拆內膽的長版外套",21,"韓文"],["video2","C3SDXJtvqMO","166 cm／62 kg 連帽外套穿搭",0,"韓文"],["video2","DfHXGFozmC8","黑色連帽外套",5,"韓文"],["video2","CmyGvaOh5WP","軍綠短版連帽外套",233,"韓文"],["video2","DfPk7A9Aclx","軍綠連帽外套",47,"韓文"]],
   xhs:[["H1","連帽派克大衣 6 件","派克大衣毛领连帽防风6件"],["H2","M65 派克大衣秋冬搭配","普通男生的M65派克大衣秋冬搭配"],["H5","長款鋪棉外套怎麼選、怎麼搭","长款羽绒服想要高质感，该如何选款怎样搭配"],["H4","連帽派克外套","Canada Goose 派克大衣 男 穿搭"],["H3","連帽派克外套（單品）","Snow Goose 派克大衣"]],
   items:[
-  {id:"H1", name:"連帽長版外套・軍綠／黑", pick:"首選", warn:"先看衣長", sw:[["#5c5a3a","軍綠"],["#19191b","黑"]],
+  {id:"H1", rname:"連帽長版外套", colors:[["軍綠","#5c5a3a","S__119545862_0.jpg"],["黑","#19191b","S__119545863_0.jpg"]], name:"連帽長版外套・軍綠／黑", pick:"首選", warn:"先看衣長", sw:[["#5c5a3a","軍綠"],["#19191b","黑"]],
    imgs:[["S__119545862_0.jpg","sq","軍綠連帽長版外套配黑色高領"],["S__119545873_0.jpg","sq","軍綠連帽長版外套背面"],["S__119545863_0.jpg","sq","黑色連帽長版外套配灰色高領"],["S__119545875_0.jpg","std","領口、袖口、背面細節"],["clean/S__119545874_0.jpg","sq","菱格鋪棉內裡"]],
    why:"西裝領外層加連帽拉鍊內襟，看起來像疊穿兩件。內裡是菱格鋪棉，長度在膝蓋上下，能蓋住大腿，擋風最好。",
    how:"高領 + 黑色直筒褲 + 靴子或厚底鞋，敞開穿拉出直線。軍綠配黑色內搭和黑褲；黑色最顯瘦。",
@@ -350,7 +372,9 @@ const TH = it => T(it.thumb || it.imgs[0][0]);   // 每款的縮圖，可用 thu
 const likes = n => n >= 10000 ? (n / 10000).toFixed(1) + " 萬" : n.toLocaleString();
 const KEYS = GROUPS.map(g => g.k).concat("R");
 const N = GROUPS.length;
-const ITEMS = GROUPS.flatMap(g => g.items.map(it => ({...it, k: g.k, style: g.short})));   // 排行榜用：每一件外套
+const ITEMS = GROUPS.flatMap(g => g.items.flatMap(it => it.colors
+  ? it.colors.map(([color, hex, thumb], i) => ({key: it.id + "_" + i, id: it.id, style: g.short, name: it.rname || it.name, color, hex, thumb}))
+  : [{key: it.id, id: it.id, style: g.short, name: it.name, thumb: it.thumb || it.imgs[0][0]}]));   // 排行榜用：每件外套、每個顏色各一個
 
 document.getElementById("tabs").innerHTML = GROUPS.map(g =>
   `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${TH(g.items[0])}" alt=""><span>${g.short}</span></button>`).join("") +
@@ -358,18 +382,21 @@ document.getElementById("tabs").innerHTML = GROUPS.map(g =>
 
 const GAME = `
   <section class="view" id="view-R" hidden>
-    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>共 ${ITEMS.length} 件外套。從最喜歡的開始，一個一個點，點到的會標上名次。排幾個都可以，不用全部排完。點錯了再點一次就取消，想傳給我就按「分享到 LINE」。</p></div>
-    <div class="rank-status" id="rank-status" aria-live="polite">還沒排，從最喜歡的開始點</div>
+    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>從最喜歡的開始點，不同顏色分開選。點錯再點一次就取消。</p></div>
+    <div class="rank-strip">
+      <div class="rank-status" id="rank-status" aria-live="polite"></div>
+      <div class="rank-picks" id="rank-picks"></div>
+    </div>
     <div class="rank-grid">${ITEMS.map(it => `
-      <button type="button" class="rk press" data-rk="${it.id}" id="rk-${it.id}" aria-pressed="false"><img src="${TH(it)}" alt="" loading="lazy"><em>點我</em><span><small>${it.id}・${it.style}</small>${it.name}</span></button>`).join("")}</div>
+      <button type="button" class="rk press" data-rk="${it.key}" id="rk-${it.key}" aria-pressed="false" aria-label="${it.id}・${it.name}${it.color ? "・" + it.color : ""}"><img src="${TH(it)}" alt="" loading="lazy"><em>點我</em><span><strong>${it.id}</strong>${it.color ? `<i style="background:${it.hex}"></i>${it.color}` : ""}</span></button>`).join("")}</div>
     <div class="rank-actions">
       <button type="button" class="btn press" id="rank-reset">重來</button>
-      <button type="button" class="btn primary press" id="rank-make" disabled>產生排行榜圖片</button>
+      <button type="button" class="btn primary press" id="rank-make" disabled>產生圖片</button>
     </div>
     <div class="rank-out" id="rank-out" hidden>
       <img id="rank-img" alt="我的外套排行榜圖片">
       <button type="button" class="btn primary press" id="rank-share">分享到 LINE</button>
-      <p class="note" id="rank-msg">按下去會跳出分享選單，選 LINE 再選朋友就能傳出。</p>
+      <p class="note" id="rank-msg">選 LINE 再選朋友就能傳出。</p>
     </div>
   </section>`;
 
@@ -387,7 +414,7 @@ document.getElementById("views").innerHTML = GAME + GROUPS.map((g, gi) => { cons
       </div>
       <div class="card-body">
         <div class="card-top"><span class="code">${it.id}</span><h3>${it.name}</h3>${it.pick ? `<span class="badge">${it.pick}</span>` : ""}${it.warn ? `<span class="badge warn">${it.warn}</span>` : ""}</div>
-        <div class="sw">${it.sw.map(([c,n]) => `<i style="background:${c}"></i>${n}`).join("　")}</div>
+        <div class="sw">${it.colors ? it.colors.map(([n,c,f]) => `<button type="button" class="chip press" data-card="${it.id}" data-shot="${M(f)}"><i style="background:${c}"></i>${n}</button>`).join("") + `<span class="more">點顏色看照片</span>` : it.sw.map(([c,n]) => `<i style="background:${c}"></i>${n}`).join("　")}</div>
         <dl class="kv"><dt>穿起來</dt><dd>${it.why}</dd><dt>怎麼搭</dt><dd>${it.how}</dd></dl>
         ${it.note ? `<p class="note">${it.note}</p>` : ""}
       </div>
@@ -479,12 +506,20 @@ document.addEventListener("click", e => {
 });
 window.addEventListener("hashchange", route);
 
+/* 外套卡片：點顏色，照片跳到該顏色 */
+document.addEventListener("click", e => {
+  const ch = e.target.closest(".chip"); if (!ch) return;
+  const shots = document.getElementById(ch.dataset.card).querySelector(".shots");
+  const img = [...shots.children].find(im => im.getAttribute("src") === ch.dataset.shot);
+  if (img) shots.scrollTo({left: img.offsetLeft, behavior: "smooth"});
+});
+
 /* 排名小遊戲：依序點選，排完產生圖片 */
 let order = [], lastBlob = null;
 document.getElementById("rank-share").addEventListener("click", async () => {
   const msg = document.getElementById("rank-msg");
   if (!lastBlob) return;
-  const file = new File([lastBlob], "我的外套排行榜.png", {type: "image/png"});
+  const file = new File([lastBlob], "我的外套排行榜.jpg", {type: "image/jpeg"});
   try {
     if (navigator.canShare && navigator.canShare({files: [file]})) {
       await navigator.share({files: [file], title: "我的外套排行榜"});
@@ -493,24 +528,31 @@ document.getElementById("rank-share").addEventListener("click", async () => {
   } catch (err) {
     if (err && err.name === "AbortError") return;
   }
-  msg.textContent = "這個瀏覽器不能直接分享圖片。請長按上面的圖片，選「儲存圖片」，再到 LINE 傳給我。";
+  msg.textContent = "這個瀏覽器不能直接分享，請長按圖片儲存後再傳。";
 });
-const rkStatus = document.getElementById("rank-status"), rkMake = document.getElementById("rank-make"), rkOut = document.getElementById("rank-out");
+const rkStatus = document.getElementById("rank-status"), rkMake = document.getElementById("rank-make"), rkOut = document.getElementById("rank-out"), rkPicks = document.getElementById("rank-picks");
+const byKey = Object.fromEntries(ITEMS.map(it => [it.key, it]));
 function rankRender(){
   document.querySelectorAll(".rk").forEach(b => {
     const i = order.indexOf(b.dataset.rk);
     b.setAttribute("aria-pressed", i >= 0);
     b.querySelector("em").textContent = i >= 0 ? i + 1 : "點我";
   });
-  rkStatus.textContent = order.length === 0 ? "還沒排，從最喜歡的開始點"
-    : order.length === ITEMS.length ? "全部排好了，可以產生排行榜圖片"
-    : `已排 ${order.length} / ${ITEMS.length}，可以再點第 ${order.length + 1} 名，或直接產生圖片`;
+  rkPicks.innerHTML = order.length
+    ? order.map((k, i) => `<button type="button" class="mini press" data-rk="${k}" aria-label="取消第 ${i + 1} 名 ${byKey[k].id}"><img src="${TH(byKey[k])}" alt=""><b>${i + 1}</b></button>`).join("")
+    : `<span class="hint">不用選完，選幾個都可以。</span>`;
+  rkPicks.classList.toggle("empty", order.length === 0);
+  rkPicks.scrollLeft = rkPicks.scrollWidth;
+  const last = byKey[order[order.length - 1]];
+  rkStatus.textContent = order.length === 0 ? ""
+    : order.length === ITEMS.length ? "全部排好了"
+    : `已排 ${order.length} / ${ITEMS.length}，最後選 ${last.id}${last.color ? "（" + last.color + "）" : ""}`;
   rkMake.disabled = order.length === 0;
-  rkMake.textContent = "產生排行榜圖片";
+  rkMake.textContent = order.length === 0 ? "產生圖片" : `產生圖片（${order.length}）`;
   rkOut.hidden = true;
 }
 document.addEventListener("click", e => {
-  const b = e.target.closest(".rk"); if (!b) return;
+  const b = e.target.closest(".rk, .mini"); if (!b) return;
   const k = b.dataset.rk;
   order = order.includes(k) ? order.filter(x => x !== k) : order.concat(k);
   rankRender();
@@ -522,40 +564,62 @@ rkMake.addEventListener("click", async () => {
   rkMake.disabled = true; rkMake.textContent = "產生中…";
   try {
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
-    const n = order.length;
-    const W = 1080, top = 230, rowH = 170, H = top + rowH * n + 70;
+    const n = order.length, ents = order.map(k => byKey[k]);
+    const W = 1080, PAD = 48, GAP = 24, CW = W - PAD * 2;
+    /* 每一排三張 */
+    const rows = [];
+    for (let i = 0; i < n; i += 3) rows.push({cols: 3, idx: [i, i + 1, i + 2].filter(j => j < n)});
+    const geo = cols => { const w = (CW - GAP * (cols - 1)) / cols; return {w, ph: Math.round(w * (cols === 1 ? 0.78 : cols === 2 ? 1.2 : 1.25)), ch: cols === 1 ? 84 : 76}; };
+    let H = 230;
+    rows.forEach(r => { r.g = geo(r.cols); r.y = H; H += r.g.ph + r.g.ch + GAP; });
+    H += 56;
+    const imgs = await Promise.all(ents.map(e => loadImg(M(e.thumb))));
     const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
     const c = cv.getContext("2d");
+    const face = (wt, sz) => `${wt} ${sz}px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif`;
+    const fit = (t, maxW, s0, s1) => {
+      let sz = s0; c.font = face(400, sz);
+      while (c.measureText(t).width > maxW && sz > s1) { sz--; c.font = face(400, sz); }
+      let out = t;
+      while (c.measureText(out).width > maxW && out.length > 2) out = out.slice(0, -2) + "…";
+      return out;
+    };
     c.fillStyle = "#ECEDEF"; c.fillRect(0, 0, W, H);
-    c.fillStyle = "#2D4B73"; c.font = '500 26px "DM Mono", monospace'; c.fillText("WINTER OUTERWEAR", 70, 86);
-    c.fillStyle = "#1E2126"; c.font = '900 64px "Noto Serif TC", serif'; c.fillText("我的外套排行榜", 70, 168);
-    for (let i = 0; i < n; i++) {
-      const it = ITEMS.find(x => x.id === order[i]), y = top + i * rowH;
-      c.fillStyle = "#F9F9FA"; c.beginPath(); c.roundRect(60, y, W - 120, rowH - 18, 22); c.fill();
-      c.fillStyle = i < 3 ? "#2D4B73" : "#5A616B"; c.font = '500 72px "DM Mono", monospace'; c.textAlign = "center"; c.fillText(String(i + 1), 135, y + 102); c.textAlign = "left";
-      const im = await loadImg(TH(it));
-      const tw = 116, th = 136, s = Math.max(tw / im.naturalWidth, th / im.naturalHeight), sw = tw / s, sh = th / s;
-      c.save(); c.beginPath(); c.roundRect(210, y + 8, tw, th, 14); c.clip();
-      c.drawImage(im, (im.naturalWidth - sw) / 2, 0, sw, sh, 210, y + 8, tw, th); c.restore();
-      c.fillStyle = "#2D4B73"; c.font = '500 28px "DM Mono", monospace'; c.fillText(it.id, 356, y + 56);
-      const idw = c.measureText(it.id).width;
-      c.fillStyle = "#5A616B"; c.font = '400 24px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText("・" + it.style, 356 + idw, y + 56);
-      let fs = 40; const face = s => `700 ${s}px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif`;
-      c.font = face(fs); while (c.measureText(it.name).width > 640 && fs > 22) { fs--; c.font = face(fs); }
-      c.fillStyle = "#1E2126"; c.fillText(it.name, 356, y + 112);
-    }
-    c.fillStyle = "#5A616B"; c.font = '400 24px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText("冬季外套選衣單", 70, H - 34);
-    const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+    c.fillStyle = "#2D4B73"; c.font = '500 24px "DM Mono", monospace'; c.fillText("WINTER OUTERWEAR", PAD, 92);
+    c.fillStyle = "#1E2126"; c.font = '900 60px "Noto Serif TC", serif'; c.fillText("我的外套排行榜", PAD, 168);
+    rows.forEach(r => r.idx.forEach((rank, col) => {
+      const e = ents[rank], im = imgs[rank], {w, ph, ch} = r.g, x = PAD + col * (w + GAP), y = r.y;
+      c.save(); c.beginPath(); c.roundRect(x, y, w, ph + ch, 24); c.clip();
+      c.fillStyle = "#F9F9FA"; c.fillRect(x, y, w, ph + ch);
+      const sc = Math.max(w / im.naturalWidth, ph / im.naturalHeight), sw = w / sc, sh = ph / sc;
+      c.drawImage(im, (im.naturalWidth - sw) / 2, 0, sw, sh, x, y, w, ph);
+      c.restore();
+      const br = r.cols === 1 ? 40 : r.cols === 2 ? 34 : 28, bx = x + br + 16, by = y + br + 16;
+      c.beginPath(); c.arc(bx, by, br, 0, Math.PI * 2); c.fillStyle = rank < 3 ? "#2D4B73" : "#1E2126"; c.fill();
+      c.fillStyle = "#fff"; c.textAlign = "center"; c.font = `500 ${Math.round(br * 1.05)}px "DM Mono", monospace`;
+      c.fillText(String(rank + 1), bx, by + Math.round(br * 0.37)); c.textAlign = "left";
+      const ty = y + ph;
+      c.fillStyle = "#2D4B73"; c.font = '500 26px "DM Mono", monospace'; c.fillText(e.id, x + 20, ty + 36);
+      if (e.color) {
+        const ex = x + 20 + c.measureText(e.id).width + 16;
+        c.beginPath(); c.arc(ex + 8, ty + 27, 8, 0, Math.PI * 2); c.fillStyle = e.hex; c.fill(); c.strokeStyle = "#B8BCC4"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#5A616B"; c.font = face(400, 20); c.fillText(e.color, ex + 24, ty + 35);
+      }
+      const nm = fit(e.name, w - 40, 20, 15);
+      c.fillStyle = "#5A616B"; c.fillText(nm, x + 20, ty + ch - 16);
+    }));
+    c.fillStyle = "#5A616B"; c.font = face(400, 22); c.fillText("冬季外套選衣單", PAD, H - 24);
+    const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", 0.9));
     const url = URL.createObjectURL(blob);
     document.getElementById("rank-img").src = url;
     lastBlob = blob;
-    document.getElementById("rank-msg").textContent = "按下去會跳出分享選單，選 LINE 再選朋友就能傳出。";
+    document.getElementById("rank-msg").textContent = "選 LINE 再選朋友就能傳出。";
     rkOut.hidden = false;
     rkOut.scrollIntoView({behavior: "smooth", block: "start"});
   } catch (err) {
     rkStatus.textContent = "圖片產生失敗，請重新整理頁面再試一次";
   }
-  rkMake.disabled = false; rkMake.textContent = "重新產生圖片";
+  rkMake.disabled = false; rkMake.textContent = "重新產生";
 });
 rankRender();
 route();
