@@ -350,6 +350,7 @@ const TH = it => T(it.thumb || it.imgs[0][0]);   // 每款的縮圖，可用 thu
 const likes = n => n >= 10000 ? (n / 10000).toFixed(1) + " 萬" : n.toLocaleString();
 const KEYS = GROUPS.map(g => g.k).concat("R");
 const N = GROUPS.length;
+const ITEMS = GROUPS.flatMap(g => g.items.map(it => ({...it, k: g.k, style: g.short})));   // 排行榜用：每一件外套
 
 document.getElementById("tabs").innerHTML = GROUPS.map(g =>
   `<button type="button" class="tab press" role="tab" data-go="${g.k}" id="tab-${g.k}"><img src="${TH(g.items[0])}" alt=""><span>${g.short}</span></button>`).join("") +
@@ -357,10 +358,10 @@ document.getElementById("tabs").innerHTML = GROUPS.map(g =>
 
 const GAME = `
   <section class="view" id="view-R" hidden>
-    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>從最喜歡的開始，一個一個點，點到的會標上名次。排幾個都可以，不用全部排完。點錯了再點一次就取消，想傳給我就按「分享到 LINE」。</p></div>
-    <div class="rank-status" id="rank-status" aria-live="polite">已排 0 / ${N}</div>
-    <div class="rank-grid">${GROUPS.map(g => `
-      <button type="button" class="rk press" data-rk="${g.k}" id="rk-${g.k}" aria-pressed="false"><img src="${TH(g.items[0])}" alt=""><em>點我</em><span><small>款式 ${g.k}</small>${g.short}</span></button>`).join("")}</div>
+    <div class="g-head"><span class="kicker">小遊戲</span><h2>我的外套排行榜</h2><p>共 ${ITEMS.length} 件外套。從最喜歡的開始，一個一個點，點到的會標上名次。排幾個都可以，不用全部排完。點錯了再點一次就取消，想傳給我就按「分享到 LINE」。</p></div>
+    <div class="rank-status" id="rank-status" aria-live="polite">還沒排，從最喜歡的開始點</div>
+    <div class="rank-grid">${ITEMS.map(it => `
+      <button type="button" class="rk press" data-rk="${it.id}" id="rk-${it.id}" aria-pressed="false"><img src="${TH(it)}" alt="" loading="lazy"><em>點我</em><span><small>${it.id}・${it.style}</small>${it.name}</span></button>`).join("")}</div>
     <div class="rank-actions">
       <button type="button" class="btn press" id="rank-reset">重來</button>
       <button type="button" class="btn primary press" id="rank-make" disabled>產生排行榜圖片</button>
@@ -502,8 +503,8 @@ function rankRender(){
     b.querySelector("em").textContent = i >= 0 ? i + 1 : "點我";
   });
   rkStatus.textContent = order.length === 0 ? "還沒排，從最喜歡的開始點"
-    : order.length === N ? "全部排好了，可以產生排行榜圖片"
-    : `已排 ${order.length} 個，可以再點第 ${order.length + 1} 名，或直接產生圖片`;
+    : order.length === ITEMS.length ? "全部排好了，可以產生排行榜圖片"
+    : `已排 ${order.length} / ${ITEMS.length}，可以再點第 ${order.length + 1} 名，或直接產生圖片`;
   rkMake.disabled = order.length === 0;
   rkMake.textContent = "產生排行榜圖片";
   rkOut.hidden = true;
@@ -529,15 +530,19 @@ rkMake.addEventListener("click", async () => {
     c.fillStyle = "#2D4B73"; c.font = '500 26px "DM Mono", monospace'; c.fillText("WINTER OUTERWEAR", 70, 86);
     c.fillStyle = "#1E2126"; c.font = '900 64px "Noto Serif TC", serif'; c.fillText("我的外套排行榜", 70, 168);
     for (let i = 0; i < n; i++) {
-      const g = GROUPS.find(x => x.k === order[i]), y = top + i * rowH;
+      const it = ITEMS.find(x => x.id === order[i]), y = top + i * rowH;
       c.fillStyle = "#F9F9FA"; c.beginPath(); c.roundRect(60, y, W - 120, rowH - 18, 22); c.fill();
       c.fillStyle = i < 3 ? "#2D4B73" : "#5A616B"; c.font = '500 72px "DM Mono", monospace'; c.textAlign = "center"; c.fillText(String(i + 1), 135, y + 102); c.textAlign = "left";
-      const im = await loadImg(TH(g.items[0]));
+      const im = await loadImg(TH(it));
       const tw = 116, th = 136, s = Math.max(tw / im.naturalWidth, th / im.naturalHeight), sw = tw / s, sh = th / s;
       c.save(); c.beginPath(); c.roundRect(210, y + 8, tw, th, 14); c.clip();
       c.drawImage(im, (im.naturalWidth - sw) / 2, 0, sw, sh, 210, y + 8, tw, th); c.restore();
-      c.fillStyle = "#2D4B73"; c.font = '500 24px "DM Mono", monospace'; c.fillText("款式 " + g.k, 356, y + 58);
-      c.fillStyle = "#1E2126"; c.font = '700 40px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText(g.name, 356, y + 112);
+      c.fillStyle = "#2D4B73"; c.font = '500 28px "DM Mono", monospace'; c.fillText(it.id, 356, y + 56);
+      const idw = c.measureText(it.id).width;
+      c.fillStyle = "#5A616B"; c.font = '400 24px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText("・" + it.style, 356 + idw, y + 56);
+      let fs = 40; const face = s => `700 ${s}px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif`;
+      c.font = face(fs); while (c.measureText(it.name).width > 640 && fs > 22) { fs--; c.font = face(fs); }
+      c.fillStyle = "#1E2126"; c.fillText(it.name, 356, y + 112);
     }
     c.fillStyle = "#5A616B"; c.font = '400 24px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'; c.fillText("冬季外套選衣單", 70, H - 34);
     const blob = await new Promise(r => cv.toBlob(r, "image/png"));
